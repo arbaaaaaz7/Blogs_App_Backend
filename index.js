@@ -26,6 +26,7 @@ const ConnectDB = async() => {
     }
 }
 
+//middleware
 dotenv.config()
 app.use(express.json())
 
