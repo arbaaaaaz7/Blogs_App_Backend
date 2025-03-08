@@ -25,6 +25,7 @@ router.post("/register", async (req, res) => {
 //LOgin
 router.post("/login", async (req, res) => {
   try {
+    console.log(req.body,"bnmasbdkbaskjd")
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.status(404).json("User not found!");
@@ -34,7 +35,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Wrong password");
     }
     const token = jwt.sign(
-      { _id, username: user.username, email: user.email },
+      { _id:user._id, username: user.username, email: user.email },
       process.env.SECRET,
       { expiresIn: "3d" }
     );
@@ -49,6 +50,8 @@ router.post("/login", async (req, res) => {
       .json(info);
 
   } catch (err) {
+    console.log(err,"errer");
+    
     res.status(500).json(err);
   }
 });

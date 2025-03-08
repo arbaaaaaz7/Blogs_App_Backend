@@ -2,7 +2,7 @@ express = require('express')
 const router = express.Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
-const post = require('../models/Post')
+const Post = require('../models/Post')
 const Comment = require('../models/Comments')
 const verifyToken = require('../verifyToken')
 
@@ -16,6 +16,8 @@ router.post("/create",verifyToken, async(req,res) => {
     } 
     
     catch (err) {
+        console.log(err,"Error");
+        
         res.status(500).json(err)
     }
 })
@@ -24,7 +26,7 @@ router.post("/create",verifyToken, async(req,res) => {
 //Update
 router.put("/:id", verifyToken, async(req,res) => {
     try {
-        const updatedPost = await post.findbyIDAndUpdate(req.params.id,{$set: req.body},{new: true})
+        const updatedPost = await Post.findbyIdAndUpdate(req.params.id,{$set: req.body},{new: true})
         res.status(200).json(updatedPost)
     } catch (err) {
         res.status(500).json(err)
@@ -36,7 +38,7 @@ router.put("/:id", verifyToken, async(req,res) => {
 router.delete("/:id", async(req,res) =>{
     try {
       
-        await Post.findbyIDAndDelete(req.params.id)
+        await Post.findbyIdAndDelete(req.params.id)
         await Comment.deleteMany({Postid: req.params.id})
         res.status(200).json("Post Deleted")
         
@@ -51,10 +53,12 @@ router.delete("/:id", async(req,res) =>{
 router.get("/:id", async(req,res) => {
     try {
 
-        const post = await Post.findbyIDAnd(req.params.id)
-        res.status(200)>express.json(post)
+        const post = await Post.findById(req.params.id)
+        res.status(200).json(post)
         
     } catch (err) {
+        console.log(err,"err");
+        
         res.status(500).json(err
 
         )

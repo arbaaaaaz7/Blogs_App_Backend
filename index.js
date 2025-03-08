@@ -11,10 +11,10 @@ const userRoute = require("./routes/user")
 const postRoute = require("./routes/post")
 const commentRoute = require("./routes/comment")
 
-app.use(cors())
+
 const corsOptions ={
-    origin: '*',
-    credential: true
+    origin: 'http://localhost:5173',
+    credentials: true
 };
 
 app.use(cors(corsOptions));
