@@ -16,6 +16,8 @@ router.post("/create",verifyToken, async(req,res) => {
     } 
     
     catch (err) {
+        console.log(err,"err");
+        
         res.status(500).json(err)
     }
 })
@@ -24,7 +26,7 @@ router.post("/create",verifyToken, async(req,res) => {
 //Update
 router.put("/:id", verifyToken, async(req,res) => {
     try {
-        const updatedComment = await Comment.findbyIDAndUpdate(req.params.id,{$set: req.body},{new: true})
+        const updatedComment = await Comment.findByIdAndUpdate(req.params.id,{$set: req.body},{new: true})
         res.status(200).json(updatedComment)
     } catch (err) {
         res.status(500).json(err)
@@ -36,11 +38,12 @@ router.put("/:id", verifyToken, async(req,res) => {
 router.delete("/:id", async(req,res) =>{
     try {
       
-        await Comment.findbyIDAndDelete(req.params.id)
+        await Comment.findByIdAndDelete(req.params.id)
         res.status(200).json("Comment Deleted")
         
     } 
     catch (err) {
+        console.log(err,"error")
         res.status(500).json(err)
     }
 })
@@ -49,7 +52,7 @@ router.delete("/:id", async(req,res) =>{
 //Get Comments
 router.get("/post/:postId", async(req,res) => {
     try {
-        const comments = await Comment.find({Postid:req.params.postId})
+        const comments = await Comment.find({postId:req.params.postId})
         res.status(200).json(comments)
         
     } catch (err) {

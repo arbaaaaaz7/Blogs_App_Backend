@@ -26,9 +26,11 @@ router.post("/create",verifyToken, async(req,res) => {
 //Update
 router.put("/:id", verifyToken, async(req,res) => {
     try {
-        const updatedPost = await Post.findbyIdAndUpdate(req.params.id,{$set: req.body},{new: true})
+        const updatedPost = await Post.findByIdAndUpdate(req.params.id,{$set: req.body},{new: true})
         res.status(200).json(updatedPost)
     } catch (err) {
+        console.log(err,"err");
+        
         res.status(500).json(err)
     }
 })
@@ -38,7 +40,7 @@ router.put("/:id", verifyToken, async(req,res) => {
 router.delete("/:id", async(req,res) =>{
     try {
       
-        await Post.findbyIdAndDelete(req.params.id)
+        await Post.findByIdAndDelete(req.params.id)
         await Comment.deleteMany({Postid: req.params.id})
         res.status(200).json("Post Deleted")
         
@@ -68,18 +70,21 @@ router.get("/:id", async(req,res) => {
 
 //Get Post 
 router.get("/", async(req,res) => {
+    const query =req.query
     try {
         
         const searchFilter = {
             title:{$regex:express.query.search, $options: "i"}
         }
 
-        const posts = await post.find(express.query.search?
+        const posts = await Post.find(express.query.search?
             searchFilter:null)
             res.status(200).json(posts)
 
 
     } catch (err) {
+        console.log(err,"err");
+        
         res.status(500).json(err)
     }
 })
